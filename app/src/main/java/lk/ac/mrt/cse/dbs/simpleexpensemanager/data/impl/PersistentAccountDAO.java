@@ -17,7 +17,6 @@ import lk.ac.mrt.cse.dbs.simpleexpensemanager.db.DatabaseHelper;
 
 public class PersistentAccountDAO implements AccountDAO {
     private final DatabaseHelper dbHelper;
-    private Context context;
     private SQLiteDatabase db;
 
     public PersistentAccountDAO(Context context) {
