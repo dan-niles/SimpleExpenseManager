@@ -1,5 +1,6 @@
 package lk.ac.mrt.cse.dbs.simpleexpensemanager.data.impl;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -32,13 +33,13 @@ public class PersistentAccountDAO implements AccountDAO {
         Cursor cursor = db.query(DatabaseHelper.ACCOUNT_TABLE, columns, null, null, null, null, null);
 
         // Iterate through each record and add to the accountNumbersList
-        while(cursor != null && cursor.moveToNext()) {
-            String accountNumber = cursor.getString(
-                    cursor.getColumnIndexOrThrow(dbHelper.ACCOUNT_NO));
+        while (cursor != null && cursor.moveToNext()) {
+            String accountNumber = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.ACCOUNT_NO));
             accountNumbersList.add(accountNumber);
         }
 
         // Close the cursor middleware
+        assert cursor != null;
         cursor.close();
 
         return accountNumbersList;
@@ -46,7 +47,28 @@ public class PersistentAccountDAO implements AccountDAO {
 
     @Override
     public List<Account> getAccountsList() {
-        return null;
+        List<Account> accountsList = new ArrayList<Account>();
+
+        // Prepare query to fetch all accounts
+        String[] columns = new String[]{DatabaseHelper.ACCOUNT_NO, DatabaseHelper.BANK_NAME, DatabaseHelper.ACCOUNT_HOLDER_NAME, DatabaseHelper.BALANCE};
+        Cursor cursor = db.query(DatabaseHelper.ACCOUNT_TABLE, columns, null, null, null, null, null);
+
+        // Iterate through records, create account object and add to accountsList
+        while (cursor != null && cursor.moveToNext()) {
+            String accountNo = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.ACCOUNT_NO));
+            String bankName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.BANK_NAME));
+            String accountHolderName = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.ACCOUNT_HOLDER_NAME));
+            double balance = cursor.getDouble(cursor.getColumnIndexOrThrow(DatabaseHelper.BALANCE));
+
+            Account account = new Account(accountNo, bankName, accountHolderName, balance);
+            accountsList.add(account);
+        }
+
+        // Close the cursor middleware
+        assert cursor != null;
+        cursor.close();
+
+        return accountsList;
     }
 
     @Override
