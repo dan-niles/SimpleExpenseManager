@@ -16,15 +16,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String BANK_NAME = "bankName";
     public static final String ACCOUNT_HOLDER_NAME = "accountHolderName";
     public static final String BALANCE = "balance";
+    public static final String ACCOUNT_NO = "accountNo";
 
     // Columns for "transaction" table
     public static final String ID = "id";
     public static final String DATE = "date";
     public static final String EXPENSE_TYPE = "expenseType";
     public static final String AMOUNT = "amount";
-
-    // Columns for both "account" and "transaction"
-    public static final String ACCOUNT_NO = "accountNo";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
